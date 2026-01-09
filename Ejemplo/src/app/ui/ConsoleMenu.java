@@ -1,30 +1,37 @@
 package app.ui;
 import java.util.InputMismatchException;
-import java.util.*;
-import java.util.Scanner;
+import app.ui.*;
 
-import app.model.Cliente;
-import app.service.ClienteService;
-import app.service.CuentaService;
+import java.util.*;
+import app.service.*;
 
 public class ConsoleMenu {
-	ClienteService clienteServ;
 	Scanner teclado = new Scanner(System.in);
-	ClientesMenu cliente;
-	CuentasMenu cuenta;
+	InputReader input;
+	MsgPrinter mensaje;
 	
-	public ConsoleMenu(ClienteService cliSrv){
-		this.clienteServ = cliSrv;
-		this.cliente = new ClientesMenu(clienteServ, teclado);
-		this.cuenta = new CuentasMenu(clienteServ, teclado);
+	ClienteService cliente;
+	CuentaService cuenta;
+	
+	ClientesMenu clienteMenu;
+	CuentasMenu cuentaMenu;
+	
+	public ConsoleMenu(ClienteService cliSrv, CuentaService cuentaSrv){
+		this.cliente = cliSrv;
+		this.cuenta = cuentaSrv;
+		this.input = new InputReader(teclado);
+		this.mensaje = new MsgPrinter(); 
+		this.clienteMenu = new ClientesMenu(cliente, teclado, input, mensaje);
+		this.cuentaMenu = new CuentasMenu(cliente, cuenta, teclado, input, mensaje);
+		
 	}
 	
 	public void showMenu() {
-		clienteServ.crearCliente("Arturo", "Romero", "Av. Hispanidad, 43", "111555X");
-		clienteServ.crearCliente("Juan", "Rigoberto", "Calle Mexico, 21", "444666J");
-		clienteServ.crearCliente("Alberto", "Garrido", "Sbda. Meixoeiro s/n", "888222K");
-		clienteServ.crearCliente("Rocio", "Garcia", "Av. Madrid, 102", "333444L");
-		clienteServ.crearCliente("Paula", "Lomera", "Crt. Fragoso, 7", "444666Q");
+		cliente.crearCliente("Arturo", "Romero", "Av. Hispanidad, 43", "111555X");
+		cliente.crearCliente("Juan", "Rigoberto", "Calle Mexico, 21", "444666J");
+		cliente.crearCliente("Alberto", "Garrido", "Sbda. Meixoeiro s/n", "888222K");
+		cliente.crearCliente("Rocio", "Garcia", "Av. Madrid, 102", "333444L");
+		cliente.crearCliente("Paula", "Lomera", "Crt. Fragoso, 7", "444666Q");
 		
 		
 		boolean exit = false;
@@ -37,7 +44,7 @@ public class ConsoleMenu {
 				// MAIN MENU
 				case 0:
 					printMenu0();
-					menu = leerTeclado();
+					menu = input.leerTeclado();
 					if(menu == 0) {									
 						exit = true;		// END PROGRAM
 					}
@@ -46,16 +53,16 @@ public class ConsoleMenu {
 				// CLIENTES	
 				case 1:		
 					printMenu1();
-					menu =  leerTeclado();
+					menu =  input.leerTeclado();
 					if(menu == 0) {
 						System.out.println(">>> Atras");
 						break;
 					}
-					else if(menu == 1) cliente.crear();
-					else if(menu == 2) cliente.cursarBaja();
-					else if(menu == 3) cliente.reactivar();
-					else if(menu == 4) cliente.consultar();
-					else if(menu == 5) cliente.listar();
+					else if(menu == 1) clienteMenu.crear();
+					else if(menu == 2) clienteMenu.cursarBaja();
+					else if(menu == 3) clienteMenu.reactivar();
+					else if(menu == 4) clienteMenu.consultar();
+					else if(menu == 5) clienteMenu.listar();
 					else {
 						System.out.println(">>> Opcion no valida");						
 					}
@@ -65,14 +72,14 @@ public class ConsoleMenu {
 				// CUENTAS
 				case 2:
 					printMenu2();
-					menu =  leerTeclado();
+					menu =  input.leerTeclado();
 					if(menu == 0) {
 						System.out.println(">>> Atras");
 						break;
 					}
-					else if(menu == 1) cuenta.crear();
-					else if(menu == 2) cuenta.eliminar();
-					else if(menu == 3) cuenta.consultar();
+					else if(menu == 1) cuentaMenu.crear();
+					else if(menu == 2) cuentaMenu.eliminar();
+					else if(menu == 3) cuentaMenu.consultar();
 					else {
 						System.out.println(">>> Opcion no valida");
 					}
@@ -82,7 +89,7 @@ public class ConsoleMenu {
 				// MOVIMIENTOS
 				case 3:
 					printMenu3();
-					menu =  leerTeclado();
+					menu =  input.leerTeclado();
 					if(menu == 0) {
 						System.out.println(">>> Atras");
 						break;
@@ -106,7 +113,7 @@ public class ConsoleMenu {
 	}
 	
 	
-	void printMenu0() {
+	private void printMenu0() {
 		System.out.println("");
 		System.out.println("Bienvenido al Sistema Bancario de Eloy ");
 		System.out.println("Elija una opcion:");
@@ -151,26 +158,5 @@ public class ConsoleMenu {
 		System.out.println("3) Hacer transferencia");
 		System.out.println("0) QUITAR/ATRAS");
 	}
-
-	
-	int leerTeclado() {
-		int opcion = 0;
-		boolean valido = false;
-		do {
-			try {
-				opcion = teclado.nextInt();
-				valido = true;
-			}catch(InputMismatchException n) {
-				System.out.println("Valor introducido no valido.");
-				valido = false;
-			}finally {
-				teclado.nextLine();		//para limpiar el buffer
-			}			
-		}while (!valido);
-		return opcion;
-	}
-
-	
-	
 
 }

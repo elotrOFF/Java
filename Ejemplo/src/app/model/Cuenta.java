@@ -9,18 +9,18 @@ public abstract class Cuenta {
 	private double saldo;
 	private boolean cuentaActiva;
 	
-	Cuenta(Cliente titular, int saldo, int numeroCuenta){		
+	Cuenta(Cliente titular, double saldo, int numeroCuenta){		
 		this.titular = titular;
 		this.saldo = saldo;
 		this.numeroCuenta = numeroCuenta;
 		activar();		
 	}
 	
-	public void ingresar(double cantidad) {
+	public void ingresarSaldo(double cantidad) {
 		this.saldo += cantidad;
 	}
 	
-	public void retirar(double cantidad) {
+	public void retirarSaldo(double cantidad) {
 		if(this.saldo >= cantidad)
 			this.saldo -= cantidad;
 	}
@@ -32,5 +32,18 @@ public abstract class Cuenta {
 	public void cancelar() {
 		this.cuentaActiva = true;
 	}	
+	
+	public void setSaldo() {
+		
+	}
+	
+	public double getSaldo() {
+		return saldo;
+	}
+	
+	public Cliente getTitular() {
+		return titular;
+	}
+	
 	
 }

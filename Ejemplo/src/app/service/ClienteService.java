@@ -44,7 +44,7 @@ public class ClienteService {
 		return c;
 	}
 	
-	private Cliente locateClientByDni(String dni) {
+	public Cliente locateClientByDni(String dni) {
 		for(Cliente c : clientes) {
 			if ( dni.equalsIgnoreCase(c.getDni()) ) {
 				return c;

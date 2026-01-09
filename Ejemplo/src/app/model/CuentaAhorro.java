@@ -1,10 +1,25 @@
 package app.model;
 
 
-class CuentaAhorro extends Cuenta{ 
+public class CuentaAhorro extends Cuenta{ 
 		double interesAnual = 3.0;	
 	
-	CuentaAhorro(Cliente titular, int saldo, int numeroCuenta){
-		super(titular, saldo, numeroCuenta);			
-		}	
+	public CuentaAhorro(Cliente titular, double saldo, int numeroCuenta){
+		super(titular, saldo, numeroCuenta);
+		
+		}
+	
+	public double getInteresAnual() {
+		return interesAnual;
+	}
+	
+	public void setInteresAnual(double nuevoInteres) {
+		this.interesAnual = nuevoInteres;
+	}
+	
+
+	
+
+	
+	
 }

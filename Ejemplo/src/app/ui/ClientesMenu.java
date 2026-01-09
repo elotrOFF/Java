@@ -7,10 +7,15 @@ import app.model.Cliente;
 public class ClientesMenu {
 	ClienteService clienteService;
 	Scanner teclado;
+	MsgPrinter mensaje;
+	InputReader input;
 	
-	public ClientesMenu(ClienteService clienteService, Scanner teclado) {
+	public ClientesMenu(ClienteService clienteService, Scanner teclado, InputReader input, MsgPrinter mensaje) {
 		this.clienteService = clienteService;
 		this.teclado = teclado;
+		this.mensaje = mensaje;
+		this.input = input;
+		this.mensaje = new MsgPrinter();
 	}
 	
 	
@@ -34,7 +39,7 @@ public class ClientesMenu {
 		
 				
 		if ( clienteService.crearCliente(nombre, apellidos, direccion, dni) == false) {
-			msgError("Cliente no creado. Error en los datos");
+			mensaje.msgError("Cliente no creado. Error en los datos");
 			return;
 		}
 		System.out.println("Usuario creado:");
@@ -49,7 +54,7 @@ public class ClientesMenu {
 		
 		// si es vacio, salimmos
 		if(dni.equals("")) {
-			msgError("No se ha indicado dni");
+			mensaje.msgError("No se ha indicado dni");
 			return;
 		}
 		
@@ -58,11 +63,11 @@ public class ClientesMenu {
 		
 		// si cliente = null --> error
 		if(c == null) {
-			msgError("Cliente no encontrado o ya esta inactivo.");
+			mensaje.msgError("Cliente no encontrado o ya esta inactivo.");
 			return;
 		}
 		System.out.println("Cliente dado de baja:");
-		printClientInfo(c);
+		mensaje.printClientInfo(c);
 		
 		return;
 	}
@@ -73,7 +78,7 @@ public class ClientesMenu {
 		String dni = teclado.nextLine();
 		
 		if(dni.equals("")) {
-			msgError("No se ha indicado dni");
+			mensaje.msgError("No se ha indicado dni");
 			return;
 		}
 
@@ -81,16 +86,14 @@ public class ClientesMenu {
 		Cliente c = clienteService.reactivarCliente(dni);
 		
 		if(c == null) {
-			msgError("Cliente no encontrado o ya esta activo.");
+			mensaje.msgError("Cliente no encontrado o ya esta activo.");
 			return;
 		}
 		
-		reactivacionClienteOk();
-		printClientInfo(c);
+		System.out.println("Reactivacion realizada correctamente. ");
+		mensaje.printClientInfo(c);
 			
 		return;
-		
-		
 	}
 	
 	public void consultar() {
@@ -109,31 +112,8 @@ public class ClientesMenu {
 	    );
 	    System.out.println("----------------------------------------------------------------------------");
 	    for( Cliente c : clientes ) {
-	    	printClientInfo(c);
+	    	mensaje.printClientInfo(c);
 	    }		
 	}	
-	
-	
-	private void reactivacionClienteOk() {
-		System.out.println("Reactivacion realizada correctamente. ");			
-	}
-	
-	
-	public void printClientInfo(Cliente c) {
-		System.out.printf(
-				"%-10s %-15s %-15s %-25s %-10s%n",
-				c.getDni(),
-				c.getNombre(),
-				c.getApellidos(),
-				c.getDireccion(),				
-				c.isActive() ? "Activo" : "Inactivo"
-				);		
-		}
-	
-	private void msgError(String m) {
-		System.out.println("ERROR. " + m);			
-	}
-	
-	
-	
+		
 }

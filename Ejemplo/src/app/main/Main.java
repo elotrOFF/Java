@@ -11,7 +11,7 @@ public class Main {
 		
 		ClienteService clienteService = new ClienteService();
 		CuentaService cuentaService  = new CuentaService();
-		ConsoleMenu menu = new ConsoleMenu(clienteService);
+		ConsoleMenu menu = new ConsoleMenu(clienteService, cuentaService);
 		
 		menu.showMenu();
 		System.out.println("<<< PROGRAMA FINALIZADO >>>");
